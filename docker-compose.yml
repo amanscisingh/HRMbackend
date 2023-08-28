@@ -1,0 +1,26 @@
+version: "3.2"
+
+services:
+  # Mongo DB
+  mongo:
+    container_name: mongo_db
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+    
+  # API Node JS server
+  api:
+    build: .
+    ports: 
+      - "5000:3000"
+    depends_on:
+      - mongo
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo_db:27017
+      DB_NAME: hrm
+
+
+volumes:
+  mongo_db:
